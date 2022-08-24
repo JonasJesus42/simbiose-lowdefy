@@ -1,2 +1,4 @@
 .lowdefy/**
 .env
+
+/node_modules

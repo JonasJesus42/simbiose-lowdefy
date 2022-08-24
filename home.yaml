@@ -3,61 +3,47 @@ type: PageHeaderMenu
 
 requests:
   - id: get_pie_chart_data
-    type: KnexBuilder
+    type: KnexRaw
     connectionId: mysql
     properties:
-       query:
-          - select:
-              - '*'
-          - from:
-              - users
-          - where:
-              - name
-              - _state: name
-          
+      query: SELECT * FROM user
+
     
 
 events:
-  onInitAsync:
+  onEnter:
     - id: fetch_pie_chart_data
       type: Request
-      params:
-        - get_pie_chart_data
+      params: get_pie_chart_data
+
+    - id: set_pie_chart_data
+      type: SetState
+      params: 
+        my_list:
+          _request: get_pie_chart_data
 
 properties:
   title: Welcome
 areas:
   content:
-    justify: center
     blocks:
-      - id: content_card
-        type: Card
-        style:
-          maxWidth: 800
+      # A List block to render the following brands.
+      # The list block will render a content area all items in the "brands_list" array in state.
+      # The "brands_list" array is populated by the "set_brands" onEnter action.
+      - id: my_list
+        type: List
         blocks:
-          - id: content
-            type: Result
-            properties:
-              title: 
-                data: # This will usually be data from a request, so use the  _request operator.
-                  _request: get_pie_chart_data
-              subTitle: We are excited to see what you are going to build
-              icon:
-                name: HeartTwoTone
-                color: '#f00'
-            areas:
-              extra:
-                blocks:
-                  - id: docs_button
-                    type: Button
-                    properties:
-                      size: large
-                      title: Let's build something
-                      color: '#1890ff'
-                    events:
-                      onClick:
-                        - id: link_to_docs
-                          type: Link
-                          params:
-                            url: https://docs.lowdefy.com
-                            newTab: true
+          - id: my_list.$.container # Wrap all the blocks for a brands item in a box.
+            type: Box
+            style:
+              background: '#fff' # Give the box a white background and some spacing.
+              margin: 10
+              padding: 10
+            blocks:
+              - id: my_list.$.first_name # Show the item name as a title in the list.
+                type: Title
+                properties:
+                  content:
+                    _state: my_list.$.first_name
+                  level: 3
+        

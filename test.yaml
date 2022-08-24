@@ -11,7 +11,7 @@ blocks:
       label:
         disabled: true
       placeholder: 
-          - _request: get_name
+          - _request: get_name  
   - id: add_item
     type: Button
     layout:

@@ -7,7 +7,7 @@ connections:
   - id: mysql
     type: Knex
     properties:
-        client: mysql
+        client: mysql2
         connection:
           host:
             _secret: MYSQL_HOST
