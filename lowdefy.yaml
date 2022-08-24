@@ -2,50 +2,23 @@
 lowdefy: 3.23.3
 name: Lowdefy starter
 
-pages:
-  - id: welcome
-    type: PageHeaderMenu
-    properties:
-      title: Welcome
-    areas:
-      content:
-        justify: center
-        blocks:
-          - id: content_card
-            type: Card
-            style:
-              maxWidth: 800
-            blocks:
-              - id: content
-                type: Result
-                properties:
-                  title: Welcome to your Lowdefy app
-                  subTitle: We are excited to see what you are going to build
-                  icon:
-                    name: HeartTwoTone
-                    color: '#f00'
-                areas:
-                  extra:
-                    blocks:
-                      - id: docs_button
-                        type: Button
-                        properties:
-                          size: large
-                          title: Let's build something
-                          color: '#1890ff'
-                        events:
-                          onClick:
-                            - id: link_to_docs
-                              type: Link
-                              params:
-                                url: https://docs.lowdefy.com
-                                newTab: true
-      footer:
-        blocks:
-          - id: footer
-            type: Paragraph
-            properties:
-              type: secondary
-              content: |
-                Made by a Lowdefy 🤖
 
+connections:
+  - id: mysql
+    type: Knex
+    properties:
+      client: mysql
+      connection:
+        host:
+          _secret: MYSQL_HOST
+        user:
+          _secret: MYSQL_USER
+        database:
+          _secret: MYSQL_DB
+        password:
+          _secret: MYSQL_PASSWORD
+
+
+pages:
+  - _ref: test.yaml
+  - _ref: home.yaml
