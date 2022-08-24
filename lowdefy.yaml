@@ -7,16 +7,16 @@ connections:
   - id: mysql
     type: Knex
     properties:
-      client: mysql
-      connection:
-        host:
-          _secret: MYSQL_HOST
-        user:
-          _secret: MYSQL_USER
-        database:
-          _secret: MYSQL_DB
-        password:
-          _secret: MYSQL_PASSWORD
+        client: mysql
+        connection:
+          host:
+            _secret: MYSQL_HOST
+          user:
+            _secret: MYSQL_USER
+          database:
+            _secret: MYSQL_DB
+          password:
+            _secret: MYSQL_PASSWORD
 
 
 pages:

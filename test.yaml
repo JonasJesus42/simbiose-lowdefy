@@ -1,18 +1,5 @@
 id: test
 type: PageHeaderMenu
-requests:
-- id: get_name
-  type: myslq
-  connectionId: knex
-  properties:
-    query:
-      - select:
-          - '*'
-      - from:
-          - user
-      - where:
-        - 
-
 layout:
   contentGutter: 16
 blocks:
@@ -23,7 +10,8 @@ blocks:
     properties:
       label:
         disabled: true
-      placeholder: first_name
+      placeholder: 
+          - _request: get_name
   - id: add_item
     type: Button
     layout:
