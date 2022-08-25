@@ -1,0 +1,166 @@
+id: novo colaborador
+type: PageHeaderMenu
+properties:
+  title: novo colaboradores
+layout:
+  contentJustify: center
+blocks: 
+  - id: content
+    type: Card
+    layout:
+      size: 800
+      contentGutter: 8
+    blocks:
+      - id: Cadastre novos colaboradores
+        type: Title
+        properties:
+          content: Cadastre novos colaboradores
+          level: 3 
+      - id: Dados de acesso
+        type: Card
+        gutter: 8
+        blocks:
+          - id: email
+            type: TextInput
+            required: true
+            gutter: 10
+            layout:
+              span: 14
+              flex: 1 0 auto
+            properties:
+              title: email
+              placeholder: Digite o email do colaborador     
+          - id: senha
+            type: PasswordInput
+            layout:
+              span: 10
+            required: true
+            properties:
+              title: senha
+              placeholder: senha 123456   
+      - id: cpf
+        type: TextInput
+        layout:
+          span: 6
+        required: true
+        properties:
+          title: Cpf
+          placeholder: Digite o cpf do colaborador
+      - id: name
+        type: TextInput
+        layout:
+          span: 4         
+        required: true
+        properties:
+          title: Nome
+          placeholder: Nome do colaborador   
+      - id: Sobrenome
+        type: TextInput
+        layout:
+          span: 6
+        required: true
+        properties:
+          title: Sobrenome
+          placeholder: Sobrenome do colaborador   
+      - id: Data de Nascimento
+        type: DateSelector
+        layout:
+          span: 6
+        required: true
+        properties:
+      - id: CEP
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: CEP
+          placeholder: Exemplo 20560218  
+      - id: Logradouro
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: Logradouro
+          placeholder: Logradouro  
+      - id: Bairro
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: Bairro
+          placeholder: Bairro   
+      - id: Cidade
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: Cidade
+          placeholder: Cidade  
+      - id: n
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: 
+          placeholder: senha 123456   
+      - id: Número
+        type: TextInput
+        layout:
+          span: 6
+        properties:
+          title: Número
+          placeholder: Número
+      - id: Possui Filhos?
+        type: RatingSlider
+        properties:
+          color: '#d9d9d9'
+          disableIcons: true 
+      - id: Estado Civil
+        type: Selector
+        layout:
+          span: 6
+        properties:
+          options:
+            - label: Solteiro
+              value: 1
+              disabled: false
+              filterString: null
+              style: null
+            - label: Casado
+              value: 2
+              disabled: false
+              filterString: null
+              style: null
+            - label: Viúvo
+              value: 3
+              disabled: false
+              filterString: null
+              style: null
+            - label:  Divorciado
+              value: 4
+              disabled: false
+              filterString: null
+              style: null
+            - label: União Estável
+              value: 5
+              disabled: false
+              filterString: null
+              style: null
+      - id: Voltar
+        type: Button
+        layout:
+          span: 12 # Set the size of the button (span 12 of 24 columns)
+        properties:
+          title: Voltar
+          block: true # Make the button fill all the space available to it
+          type: default # Make the button a plain button
+          icon: ClearOutlined
+      - id: Cadastrar
+        type: Button
+        layout:
+          span: 12
+        properties:
+          title: Cadastrar
+          block: true
+          type: primary # Make the button a primary button with color
+          icon: SaveOutlined

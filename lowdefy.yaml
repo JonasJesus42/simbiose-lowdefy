@@ -1,7 +1,5 @@
-
 lowdefy: 3.23.3
 name: Lowdefy starter
-
 
 connections:
   - id: mysql
@@ -18,7 +16,7 @@ connections:
           password:
             _secret: MYSQL_PASSWORD
 
-
 pages:
-  - _ref: test.yaml
-  - _ref: home.yaml
+  - _ref: screens/test.yaml
+  - _ref: screens/home.yaml
+  - _ref: screens/novoColaborador.yaml
