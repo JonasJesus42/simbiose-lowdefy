@@ -20,3 +20,4 @@ pages:
   - _ref: screens/test.yaml
   - _ref: screens/home.yaml
   - _ref: screens/novoColaborador.yaml
+  - _ref: screens/login.yaml
