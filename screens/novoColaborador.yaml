@@ -14,138 +14,238 @@ blocks:
       - id: Cadastre novos colaboradores
         type: Title
         properties:
-          content: Cadastre novos colaboradores
+          content: first_name.0.first_name
           level: 3 
       - id: Dados de acesso
         type: Card
-        gutter: 8
+        layout:
+          contentJustify: space-between
         blocks:
           - id: email
             type: TextInput
-            required: true
-            gutter: 10
-            layout:
-              span: 14
-              flex: 1 0 auto
-            properties:
-              title: email
-              placeholder: Digite o email do colaborador     
-          - id: senha
-            type: PasswordInput
+            validate:
+              - message: Coloque um E-mail.
+                status: error
+                pass:
+                  _not:
+                    _not:
+                      _state: email
+              - message: Coloque um email valido.
+                status: error
+                pass:
+                  _regex: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
             layout:
               span: 10
-            required: true
+            properties:
+              title: E-mail
+              placeholder: Digite o E-mail do colaborador
+          - id: password
+            type: PasswordInput
+            validate:
+              - message: Coloque uma senha.
+                status: error
+                pass:
+                  _not:
+                    _not:
+                      _state: password
+              - message: Deve conter 8 caracteres no mínimo.
+                status: error
+                pass:
+                  _regex: '^[0-9a-zA-Z$*&@#]{8,}$'
+            layout:
+              span: 10
             properties:
               title: senha
               placeholder: senha 123456   
-      - id: cpf
-        type: TextInput
+      - id: dados pessoas    
+        type: Card
         layout:
-          span: 6
-        required: true
-        properties:
-          title: Cpf
-          placeholder: Digite o cpf do colaborador
-      - id: name
-        type: TextInput
+          contentGutter: 5
+          contentJustify: start
+        blocks:   
+          - id: first_name
+            type: TextInput
+            validate:
+              - message: Digite o nome.
+                status: error
+                pass:
+                  _not:
+                    _not:
+                      _state: first_name
+              - message: Não podecaracter especial e dígito .
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+            layout:
+              span: 10 
+              align: middle        
+            properties:
+              title: Nome
+              placeholder: Nome do colaborador   
+          - id: last_name
+            type: TextInput
+            validate:
+              - message: Digite o nome.
+                status: error
+                pass:
+                  _not:
+                    _not:
+                      _state: last_name
+              - message: Não podecaracter especial e dígito .
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+            layout:
+              span: 10
+              offset: 2
+            properties:
+              title: Sobrenome
+              placeholder: Sobrenome do colaborador   
+          - id: cpf
+            type: TextInput
+            validate:
+              - message: Digite o CPF.
+                status: error
+                pass:
+                  _not:
+                    _not:
+                      _state: cpf
+              - message: CPF deve conter 11 digitos.
+                status: error
+                pass:
+                  _regex: '^\d{11,11}$'
+            layout:
+              span: 8
+            properties:
+              title: CPF
+              placeholder: Digite o CPF do colaborador
+          - id: created_at
+            type: DateSelector
+            layout:
+              span: 10
+              offset: 4
+            required: true
+            properties:
+              disabledDates:
+                dates: []
+                ranges: []
+              format: DD/MM/YYYY
+      - id: dados localização    
+        type: Card
         layout:
-          span: 4         
-        required: true
-        properties:
-          title: Nome
-          placeholder: Nome do colaborador   
-      - id: Sobrenome
-        type: TextInput
-        layout:
-          span: 6
-        required: true
-        properties:
-          title: Sobrenome
-          placeholder: Sobrenome do colaborador   
-      - id: Data de Nascimento
-        type: DateSelector
-        layout:
-          span: 6
-        required: true
-        properties:
-      - id: CEP
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: CEP
-          placeholder: Exemplo 20560218  
-      - id: Logradouro
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: Logradouro
-          placeholder: Logradouro  
-      - id: Bairro
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: Bairro
-          placeholder: Bairro   
-      - id: Cidade
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: Cidade
-          placeholder: Cidade  
-      - id: n
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: 
-          placeholder: senha 123456   
-      - id: Número
-        type: TextInput
-        layout:
-          span: 6
-        properties:
-          title: Número
-          placeholder: Número
-      - id: Possui Filhos?
-        type: RatingSlider
-        properties:
-          color: '#d9d9d9'
-          disableIcons: true 
-      - id: Estado Civil
-        type: Selector
-        layout:
-          span: 6
-        properties:
-          options:
-            - label: Solteiro
-              value: 1
-              disabled: false
-              filterString: null
-              style: null
-            - label: Casado
-              value: 2
-              disabled: false
-              filterString: null
-              style: null
-            - label: Viúvo
-              value: 3
-              disabled: false
-              filterString: null
-              style: null
-            - label:  Divorciado
-              value: 4
-              disabled: false
-              filterString: null
-              style: null
-            - label: União Estável
-              value: 5
-              disabled: false
-              filterString: null
-              style: null
+          contentGutter: [15, 0]
+        blocks:   
+          - id: street
+            type: TextInput
+            validate:
+              - message: Não podecaracter especial.
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
+            layout:
+              span: 7
+            properties:
+              title: Logradouro
+              placeholder: 'EX: Rua caruaru' 
+          - id: number
+            type: TextInput
+            validate:
+              - message: Não podecaracter especial.
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
+            layout:
+              span: 7
+            properties:
+              title: Número
+              placeholder: 'EX: 150'
+          - id: district
+            type: TextInput
+            validate:
+              - message: Não podecaracter especial.
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'            
+            layout:
+              span: 6
+            properties:
+              title: Bairro
+              placeholder: 'EX: Grajaú'   
+          - id: city
+            type: TextInput
+            validate:
+              - message: Não podecaracter especial.
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+            layout:
+              span: 7
+            properties:
+              title: Cidade
+              placeholder: 'EX: Rio de Janeiro'    
+          - id: state
+            type: TextInput
+            validate:
+              - message: Não podecaracter especial.
+                status: error
+                pass:
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+            layout:
+              span: 6
+            properties:
+              title: 
+              placeholder: 'EX: RJ'  
+          - id: zip
+            type: TextInput
+            validate:
+              - message: Apenas digitos.
+                status: error
+                pass:
+                  _regex: '^\d{8,8}$'   
+            layout:
+              span: 6
+            properties:
+              title: CEP
+              placeholder: 'Ex: 20560218'  
+      - id: dados familiar    
+        type: Card
+        blocks:   
+          - id: children_qty
+            type: RatingSlider
+            properties:
+              color: '#d9d9d9'
+              disableIcons: true 
+          - id: marital_state
+            type: Selector
+            layout:
+              span: 10
+            properties:
+              options:
+                - label: Solteiro
+                  value: 1
+                  disabled: false
+                  filterString: null
+                  style: null
+                - label: Casado
+                  value: 2
+                  disabled: false
+                  filterString: null
+                  style: null
+                - label: Viúvo
+                  value: 3
+                  disabled: false
+                  filterString: null
+                  style: null
+                - label:  Divorciado
+                  value: 4
+                  disabled: false
+                  filterString: null
+                  style: null
+                - label: União Estável
+                  value: 5
+                  disabled: false
+                  filterString: null
+                  style: null
       - id: Voltar
         type: Button
         layout:
@@ -154,7 +254,7 @@ blocks:
           title: Voltar
           block: true # Make the button fill all the space available to it
           type: default # Make the button a plain button
-          icon: ClearOutlined
+          icon: ArrowLeftOutlined
       - id: Cadastrar
         type: Button
         layout:
@@ -164,3 +264,10 @@ blocks:
           block: true
           type: primary # Make the button a primary button with color
           icon: SaveOutlined
+        events:
+          onClick:
+            - id: validate_campos
+              type: Validate
+              messages:
+                error: Ah campos com erro.
+
