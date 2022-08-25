@@ -1,5 +1,28 @@
 id: novo colaborador
 type: PageHeaderMenu
+requests:
+  - id: first_name
+    type: KnexBuilder
+    connectionId: mysql
+    properties:
+        tableName: user
+        query:
+          - insert:
+              - _state: true
+              #- first_name:
+              #    _state: name
+              #- last_name:
+              #    _state: sobrenome
+              #- cpf:
+              #    _state: cpf
+              #- email:
+              #    _state: email
+              #- password:
+              #    _state: senha
+              #- zip:
+              #    _state: cep
+              #- street:
+              #    _state: rua
 properties:
   title: novo colaboradores
 layout:
@@ -270,4 +293,7 @@ blocks:
               type: Validate
               messages:
                 error: Ah campos com erro.
-
+            - id: fetch_first_name
+              type: Request
+              params:
+                - first_name
