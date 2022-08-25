@@ -1,0 +1,109 @@
+onClick:
+- id: toggleOpen
+  type: CallMethod
+  params:
+    blockId: block_id
+    method: toggleOpen
+
+
+id: login
+type: PageHCF
+properties:
+  title: Log in
+layout:
+  contentJustify: center
+areas:
+    header:
+      blocks:
+        - id: block1
+          type: Title
+    content:
+      style:
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        flex: 1;
+        flex-direction: column;
+        contentGutter: 8
+      blocks:
+        - id: block2
+          type: Title
+          properties:
+            content: Log in
+            level: 3
+        - id: Dados de acesso
+          style:
+            justifyContent: end
+          type: Box
+          blocks:
+            - id: email
+              type: TextInput
+              required: true
+              layout:
+                span: 24              
+              properties:
+                title: E-mail
+                placeholder: Digite o email do colaborador     
+            - id: senha
+              type: PasswordInput
+              layout:
+                span: 24
+              required: true
+              properties:
+                title: Senha
+                placeholder: senha 123456    
+            - id: Esqueci Senha
+              type: Button
+              layout:
+                span: 6
+              properties:
+                style:
+                  border: None
+                  boxShadow: None
+                ghost: true
+                title: Esqueci minha senha
+                block: true
+                type: primary # Make the button a primary button with color
+                icon: LoginOutlined
+              events:
+                onClick:
+                - id: setOpen
+                  type: CallMethod
+                  params:
+                    blockId: modal
+                    method: setOpen
+                    args:
+                      - open: true
+            - id: Cadastrar
+              type: Button
+              layout:
+                span: 24
+              properties:
+                style:
+                  marginTop: 10px
+                title: Log in
+                block: true
+                type: primary # Make the button a primary button with color
+                icon: LoginOutlined        
+            - id: modal
+              type: Modal
+              properties:
+                title: Recuperar Senha
+                okText: Enviar Email
+              blocks:
+                - id: recover_email
+                  type: TextInput
+                  required: true
+                  layout:
+                  span: 24              
+                  properties:
+                    title: E-mail
+                    placeholder: Digite o email do colaborador 
+    footer:
+      blocks:
+        - id: block3
+          type: Title
+          properties:
+            content: Simbiose Ventures
+            level: 4        
+                
