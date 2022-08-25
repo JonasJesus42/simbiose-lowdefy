@@ -2,27 +2,22 @@ id: home
 type: PageHeaderMenu
 
 requests:
-  - id: get_pie_chart_data
+  - id: first_name
     type: KnexBuilder
     connectionId: mysql
     properties:
        query:
           - select:
-              - '*'
+              - first_name
           - from:
-              - users
-          - where:
-              - name
-              - _state: name
-          
-    
+              - user
 
 events:
   onInitAsync:
-    - id: fetch_pie_chart_data
+    - id: fetch_first_name
       type: Request
       params:
-        - get_pie_chart_data
+        - first_name
 
 properties:
   title: Welcome
@@ -39,8 +34,8 @@ areas:
             type: Result
             properties:
               title: 
-                data: # This will usually be data from a request, so use the  _request operator.
-                  _request: get_pie_chart_data
+                _request: first_name.0.first_name
+
               subTitle: We are excited to see what you are going to build
               icon:
                 name: HeartTwoTone
