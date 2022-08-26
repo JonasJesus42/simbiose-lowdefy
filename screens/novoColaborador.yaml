@@ -19,7 +19,8 @@ requests:
     type: SendGridMailSend
     connectionId: my_sendgrid
     properties:
-      to: givaldo.neto@simbioseventures.com
+      to: 
+        _state: email
       dynamicTemplateData:
         login: 
           _state: email
