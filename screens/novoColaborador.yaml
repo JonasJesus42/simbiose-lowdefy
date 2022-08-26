@@ -9,12 +9,22 @@ requests:
         query:
           - insert:
               - _state: true
-  - id: get_api_1
+  - id: get_zip_data
     type: AxiosHttp
     connectionId: cep
     properties:
         url:
           _nunjucks: https://viacep.com.br/ws/{{ zip }}/json/   
+  - id: send_reminder
+    type: SendGridMailSend
+    connectionId: my_sendgrid
+    properties:
+      to: givaldo.neto@simbioseventures.com
+      dynamicTemplateData:
+        login: 
+          _state: email
+        password: 
+          _state: password
 properties:
   title: novo colaboradores
 layout:
@@ -178,7 +188,7 @@ blocks:
                             - _state: zip
                           - 8
                     params:
-                      - get_api_1             
+                      - get_zip_data             
                   - id: set_brands
                     type: SetState
                     skip:
@@ -189,13 +199,13 @@ blocks:
                           - 8
                     params:
                       street:
-                        _request: get_api_1.data.logradouro
+                        _request: get_zip_data.data.logradouro
                       district:
-                        _request: get_api_1.data.bairro
+                        _request: get_zip_data.data.bairro
                       city:
-                        _request: get_api_1.data.localidade
+                        _request: get_zip_data.data.localidade
                       state:
-                        _request: get_api_1.data.uf 
+                        _request: get_zip_data.data.uf 
           - id: street
             type: TextInput
             validate:
@@ -340,4 +350,9 @@ blocks:
               type: Request
               params:
                 - save_data
+            - id: send_email
+              type: Request
+              params:
+                - send_reminder
+
   

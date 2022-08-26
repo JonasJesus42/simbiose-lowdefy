@@ -22,6 +22,13 @@ connections:
             _secret: MYSQL_PASSWORD
   - id: cep
     type: AxiosHttp 
+  - id: my_sendgrid
+    type: SendGridMail
+    properties:
+      apiKey:
+        _secret: SENDGRID_API_KEY
+      from: jonas.silva@simbioseventures.com
+      templateId: d-783a032125c24ece991217283d835727
 
 pages:
   - _ref: screens/test.yaml
