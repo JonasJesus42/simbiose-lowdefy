@@ -1,6 +1,11 @@
 lowdefy: 3.23.3
 name: Lowdefy starter
 
+app:
+  html:
+    appendHead:
+      _ref: imports.html 
+      
 connections:
   - id: mysql
     type: Knex
@@ -15,6 +20,8 @@ connections:
             _secret: MYSQL_DB
           password:
             _secret: MYSQL_PASSWORD
+  - id: cep
+    type: AxiosHttp 
 
 pages:
   - _ref: screens/test.yaml

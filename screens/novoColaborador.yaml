@@ -1,7 +1,7 @@
 id: novo colaborador
 type: PageHeaderMenu
 requests:
-  - id: first_name
+  - id: save_data
     type: KnexBuilder
     connectionId: mysql
     properties:
@@ -9,20 +9,12 @@ requests:
         query:
           - insert:
               - _state: true
-              #- first_name:
-              #    _state: name
-              #- last_name:
-              #    _state: sobrenome
-              #- cpf:
-              #    _state: cpf
-              #- email:
-              #    _state: email
-              #- password:
-              #    _state: senha
-              #- zip:
-              #    _state: cep
-              #- street:
-              #    _state: rua
+  - id: get_api_1
+    type: AxiosHttp
+    connectionId: cep
+    properties:
+        url:
+          _nunjucks: https://viacep.com.br/ws/{{ zip }}/json/   
 properties:
   title: novo colaboradores
 layout:
@@ -37,7 +29,7 @@ blocks:
       - id: Cadastre novos colaboradores
         type: Title
         properties:
-          content: first_name.0.first_name
+          content: Cadastre novos colaboradores
           level: 3 
       - id: Dados de acesso
         type: Card
@@ -46,6 +38,7 @@ blocks:
         blocks:
           - id: email
             type: TextInput
+            SetState: waa
             validate:
               - message: Coloque um E-mail.
                 status: error
@@ -79,7 +72,7 @@ blocks:
               span: 10
             properties:
               title: senha
-              placeholder: senha 123456   
+              placeholder: 'EX: 12345678'  
       - id: dados pessoas    
         type: Card
         layout:
@@ -142,22 +135,67 @@ blocks:
             properties:
               title: CPF
               placeholder: Digite o CPF do colaborador
-          - id: created_at
+          - id: birthday
             type: DateSelector
             layout:
               span: 10
               offset: 4
             required: true
             properties:
+              title: Data de nascimento
+              placeholder: 'Digite ou Selecione'  
               disabledDates:
                 dates: []
-                ranges: []
+                ranges: 
+                max: 
+                  _data: 
               format: DD/MM/YYYY
       - id: dados localização    
         type: Card
         layout:
           contentGutter: [15, 0]
         blocks:   
+          - id: zip
+            type: TextInput
+            validate:
+              - message: Apenas digitos.
+                status: error
+                pass:
+                  _regex: '^\d{8,8}$'   
+            layout:
+              span: 6
+            properties:
+              title: CEP
+              placeholder: 'Ex: 20560218' 
+            events:
+              onChange:
+                  - id: get_cep
+                    type: Request
+                    skip:
+                      _not:
+                        _gte:
+                          - _js.getLabel: 
+                            - _state: zip
+                          - 8
+                    params:
+                      - get_api_1             
+                  - id: set_brands
+                    type: SetState
+                    skip:
+                      _not:
+                        _gte:
+                          - _js.getLabel: 
+                            - _state: zip
+                          - 8
+                    params:
+                      street:
+                        _request: get_api_1.data.logradouro
+                      district:
+                        _request: get_api_1.data.bairro
+                      city:
+                        _request: get_api_1.data.localidade
+                      state:
+                        _request: get_api_1.data.uf 
           - id: street
             type: TextInput
             validate:
@@ -170,6 +208,7 @@ blocks:
             properties:
               title: Logradouro
               placeholder: 'EX: Rua caruaru' 
+              disabled: true
           - id: number
             type: TextInput
             validate:
@@ -194,6 +233,7 @@ blocks:
             properties:
               title: Bairro
               placeholder: 'EX: Grajaú'   
+              disabled: true
           - id: city
             type: TextInput
             validate:
@@ -205,7 +245,8 @@ blocks:
               span: 7
             properties:
               title: Cidade
-              placeholder: 'EX: Rio de Janeiro'    
+              placeholder: 'EX: Rio de Janeiro'
+              disabled: true    
           - id: state
             type: TextInput
             validate:
@@ -216,20 +257,9 @@ blocks:
             layout:
               span: 6
             properties:
-              title: 
-              placeholder: 'EX: RJ'  
-          - id: zip
-            type: TextInput
-            validate:
-              - message: Apenas digitos.
-                status: error
-                pass:
-                  _regex: '^\d{8,8}$'   
-            layout:
-              span: 6
-            properties:
-              title: CEP
-              placeholder: 'Ex: 20560218'  
+              title: Estado
+              placeholder: 'EX: RJ'
+              disabled: true  
       - id: dados familiar    
         type: Card
         blocks:   
@@ -238,11 +268,24 @@ blocks:
             properties:
               color: '#d9d9d9'
               disableIcons: true 
+              disableNotApplicable: true
+              title: Quantos filhos?
+          - id: children_names
+            type: TextArea
+            properties:
+              autoSize: true
+              title: Digite o nome dos filhos
+            visible: 
+              _gte:
+                - _state: children_qty
+                - 1
           - id: marital_state
             type: Selector
             layout:
               span: 10
             properties:
+              title: Estato civil
+              placeholder: 'Escolha o um estado'  
               options:
                 - label: Solteiro
                   value: 1
@@ -272,11 +315,11 @@ blocks:
       - id: Voltar
         type: Button
         layout:
-          span: 12 # Set the size of the button (span 12 of 24 columns)
+          span: 12 
         properties:
           title: Voltar
-          block: true # Make the button fill all the space available to it
-          type: default # Make the button a plain button
+          block: true 
+          type: default 
           icon: ArrowLeftOutlined
       - id: Cadastrar
         type: Button
@@ -285,15 +328,16 @@ blocks:
         properties:
           title: Cadastrar
           block: true
-          type: primary # Make the button a primary button with color
+          type: primary 
           icon: SaveOutlined
         events:
           onClick:
-            - id: validate_campos
+            - id: validate_filds
               type: Validate
               messages:
                 error: Ah campos com erro.
-            - id: fetch_first_name
+            - id: insert
               type: Request
               params:
-                - first_name
+                - save_data
+  
