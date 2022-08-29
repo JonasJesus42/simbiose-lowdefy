@@ -1,0 +1,78 @@
+id: colaboradores
+type: PageHeaderMenu
+properties:
+  title: Listagem de Colaboradores
+
+events:
+  onInitAsync:
+    - id: fetch_data  
+      type: Request 
+      params:
+        - get_colaboradores 
+
+requests:
+  - id: get_colaboradores
+    type: KnexBuilder
+    connectionId: mysql
+    properties:
+      query: 
+        - select:
+          - first_name: 'first_name'
+          - last_name: 'last_name'
+          - email: 'email' 
+          - birthday: 'birthday'
+        - from:
+          - user
+
+areas:
+  content:
+    blocks:
+      - id: table_card
+        type: Card
+        properties:
+          title: Listagem de Colaboradores
+        blocks:
+        - id: my_table
+          type: AgGridAlpine
+          properties:
+            rowData:
+              _request: get_colaboradores
+            defaultColDef:
+              sortable: true
+              resizable: true
+              filter: true
+            columnDefs:
+              - headerName: Nome
+                field: first_name
+                width: 450
+              - headerName: Sobrenome
+                field: last_name
+                width: 450 
+              - headerName: Email
+                field: email
+                width: 450 
+              - headerName: Data de Nascimento
+                field: birthday
+                width: 350    
+                valueFormatter:
+                  _function:
+                    __format.momentFormat:
+                      on:
+                        __args: 0.value
+                      params:
+                        format: 'DD-MM-YYYY'
+        - id: Download
+          type: Button
+          properties:
+            style:
+              marginTop: 10px
+            title: Download CSV
+            icon: DownloadOutlined
+          events:
+            onClick:
+              - id: download
+                type: CallMethod
+                params:
+                  blockId: table
+                  method: exportDataAsCsv                
+                

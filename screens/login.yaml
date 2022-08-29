@@ -84,7 +84,13 @@ areas:
                 title: Log in
                 block: true
                 type: primary # Make the button a primary button with color
-                icon: LoginOutlined        
+                icon: LoginOutlined
+              events:
+                onClick:
+                  - id: auth-login
+                    type: Login
+                    params:
+                      pageId: home 
             - id: modal
               type: Modal
               properties:
