@@ -1,5 +1,8 @@
 lowdefy: 3.23.3
 name: Lowdefy starter
+types:
+  AgGridAlpine:
+    url: https://blocks-cdn.lowdefy.com/v3.12.3/blocks-aggrid/meta/AgGridAlpine.json
 
 connections:
   - id: mysql
@@ -20,4 +23,4 @@ pages:
   - _ref: screens/test.yaml
   - _ref: screens/home.yaml
   - _ref: screens/novoColaborador.yaml
-  - _ref: screens/login.yaml
+  - _ref: screens/listagem-col.yaml
