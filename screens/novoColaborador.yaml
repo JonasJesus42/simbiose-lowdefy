@@ -30,329 +30,349 @@ properties:
   title: novo colaboradores
 layout:
   contentJustify: center
-blocks: 
-  - id: content
-    type: Card
-    layout:
-      size: 800
-      contentGutter: 8
-    blocks:
-      - id: Cadastre novos colaboradores
-        type: Title
-        properties:
-          content: Cadastre novos colaboradores
-          level: 3 
-      - id: Dados de acesso
+areas:
+  header:
+     blocks:
+       - _ref: components/user_avatar.yaml
+  content:
+    blocks: 
+      - id: content
         type: Card
         layout:
-          contentJustify: space-between
+          size: 800
+          contentGutter: 8
         blocks:
-          - id: email
-            type: TextInput
-            validate:
-              - message: Coloque um E-mail.
-                status: error
-                pass:
-                  _not:
-                    _not:
-                      _state: email
-              - message: Coloque um email valido.
-                status: error
-                pass:
-                  _regex: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-            layout:
-              span: 10
+          - id: Cadastre novos colaboradores
+            type: Title
             properties:
-              title: E-mail
-              placeholder: Digite o E-mail do colaborador
-          - id: password
-            type: PasswordInput
-            validate:
-              - message: Coloque uma senha.
-                status: error
-                pass:
-                  _not:
-                    _not:
-                      _state: password
-              - message: Deve conter 8 caracteres no mínimo.
-                status: error
-                pass:
-                  _regex: '^[0-9a-zA-Z$*&@#]{8,}$'
+              content: Cadastre novos colaboradores
+              level: 3 
+          - id: Dados de acesso
+            type: Card
             layout:
-              span: 10
-            properties:
-              title: senha
-              placeholder: 'EX: 12345678'  
-      - id: dados pessoas    
-        type: Card
-        layout:
-          contentGutter: 5
-          contentJustify: start
-        blocks:   
-          - id: first_name
-            type: TextInput
-            validate:
-              - message: Digite o nome.
-                status: error
-                pass:
-                  _not:
-                    _not:
-                      _state: first_name
-              - message: Não podecaracter especial e dígito .
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+              contentJustify: space-between
+            blocks:
+              - id: email
+                type: TextInput
+                validate:
+                  - message: Coloque um E-mail.
+                    status: error
+                    pass:
+                      _not:
+                        _not:
+                          _state: email
+                  - message: Coloque um email valido.
+                    status: error
+                    pass:
+                      _regex: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                layout:
+                  span: 10
+                properties:
+                  title: E-mail
+                  placeholder: Digite o E-mail do colaborador
+              - id: password
+                type: PasswordInput
+                validate:
+                  - message: Coloque uma senha.
+                    status: error
+                    pass:
+                      _not:
+                        _not:
+                          _state: password
+                  - message: Deve conter 8 caracteres no mínimo.
+                    status: error
+                    pass:
+                      _regex: '^[0-9a-zA-Z$*&@#]{8,}$'
+                layout:
+                  span: 10
+                properties:
+                  title: senha
+                  placeholder: 'EX: 12345678'  
+          - id: dados pessoas    
+            type: Card
             layout:
-              span: 10 
-              align: middle        
-            properties:
-              title: Nome
-              placeholder: Nome do colaborador   
-          - id: last_name
-            type: TextInput
-            validate:
-              - message: Digite o nome.
-                status: error
-                pass:
-                  _not:
-                    _not:
-                      _state: last_name
-              - message: Não podecaracter especial e dígito .
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+              contentGutter: 5
+              contentJustify: start
+            blocks:   
+              - id: first_name
+                type: TextInput
+                validate:
+                  - message: Digite o nome.
+                    status: error
+                    pass:
+                      _not:
+                        _not:
+                          _state: first_name
+                  - message: Não podecaracter especial e dígito .
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+                layout:
+                  span: 10 
+                  align: middle        
+                properties:
+                  title: Nome
+                  placeholder: Nome do colaborador   
+              - id: last_name
+                type: TextInput
+                validate:
+                  - message: Digite o nome.
+                    status: error
+                    pass:
+                      _not:
+                        _not:
+                          _state: last_name
+                  - message: Não podecaracter especial e dígito .
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
+                layout:
+                  span: 10
+                  offset: 2
+                properties:
+                  title: Sobrenome
+                  placeholder: Sobrenome do colaborador   
+              - id: cpf
+                type: TextInput
+                validate:
+                  - message: Digite o CPF.
+                    status: error
+                    pass:
+                      _not:
+                        _not:
+                          _state: cpf
+                  - message: CPF deve conter 11 digitos.
+                    status: error
+                    pass:
+                      _regex: '^\d{11,11}$'
+                layout:
+                  span: 8
+                properties:
+                  title: CPF
+                  placeholder: Digite o CPF do colaborador
+              - id: birthday
+                type: DateSelector
+                layout:
+                  span: 10
+                  offset: 4
+                required: true
+                properties:
+                  title: Data de nascimento
+                  placeholder: 'Digite ou Selecione'  
+                  disabledDates:
+                    dates: []
+                    ranges: 
+                    max: 
+                      _data: 
+                  format: DD/MM/YYYY
+          - id: dados localização    
+            type: Card
             layout:
-              span: 10
-              offset: 2
-            properties:
-              title: Sobrenome
-              placeholder: Sobrenome do colaborador   
-          - id: cpf
-            type: TextInput
-            validate:
-              - message: Digite o CPF.
-                status: error
-                pass:
-                  _not:
-                    _not:
-                      _state: cpf
-              - message: CPF deve conter 11 digitos.
-                status: error
-                pass:
-                  _regex: '^\d{11,11}$'
+              contentGutter: [15, 0]
+            blocks:   
+              - id: zip
+                type: TextInput
+                validate:
+                  - message: Apenas digitos.
+                    status: error
+                    pass:
+                      _regex: '^\d{8,8}$'   
+                layout:
+                  span: 6
+                properties:
+                  title: CEP
+                  placeholder: 'Ex: 20560218' 
+                events:
+                  onChange:
+                      - id: get_cep
+                        type: Request
+                        skip:
+                          _not:
+                            _gte:
+                              - _js.getLabel: 
+                                - _state: zip
+                              - 8
+                        params:
+                          - get_zip_data             
+                      - id: set_brands
+                        type: SetState
+                        skip:
+                          _not:
+                            _gte:
+                              - _js.getLabel: 
+                                - _state: zip
+                              - 8
+                        params:
+                          street:
+                            _request: get_zip_data.data.logradouro
+                          district:
+                            _request: get_zip_data.data.bairro
+                          city:
+                            _request: get_zip_data.data.localidade
+                          state:
+                            _request: get_zip_data.data.uf 
+              - id: street
+                type: TextInput
+                validate:
+                  - message: Não podecaracter especial.
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
+                layout:
+                  span: 7
+                properties:
+                  title: Logradouro
+                  placeholder: 'EX: Rua caruaru' 
+                  disabled: false
+              - id: number
+                type: TextInput
+                validate:
+                  - message: Não podecaracter especial.
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
+                layout:
+                  span: 7
+                properties:
+                  title: Número
+                  placeholder: 'EX: 150'
+              - id: district
+                type: TextInput
+                validate:
+                  - message: Não podecaracter especial.
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'            
+                layout:
+                  span: 6
+                properties:
+                  title: Bairro
+                  placeholder: 'EX: Grajaú'   
+                  disabled: false
+              - id: city
+                type: TextInput
+                validate:
+                  - message: Não podecaracter especial.
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+                layout:
+                  span: 7
+                properties:
+                  title: Cidade
+                  placeholder: 'EX: Rio de Janeiro'
+                  disabled: false   
+              - id: state
+                type: TextInput
+                validate:
+                  - message: Não podecaracter especial.
+                    status: error
+                    pass:
+                      _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+                layout:
+                  span: 6
+                properties:
+                  title: Estado
+                  placeholder: 'EX: RJ'
+                  disabled: false  
+          - id: dados familiar    
+            type: Card
+            blocks:   
+              - id: children_qty
+                type: RatingSlider
+                properties:
+                  color: '#d9d9d9'
+                  disableIcons: true 
+                  disableNotApplicable: true
+                  title: Quantos filhos?
+              - id: children_names
+                type: TextArea
+                properties:
+                  autoSize: true
+                  title: Digite o nome dos filhos
+                visible: 
+                  _gte:
+                    - _state: children_qty
+                    - 1
+              - id: marital_state
+                type: Selector
+                layout:
+                  span: 10
+                properties:
+                  title: Estato civil
+                  placeholder: 'Escolha o um estado'  
+                  options:
+                    - label: Solteiro
+                      value: 1
+                      disabled: false
+                      filterString: null
+                      style: null
+                    - label: Casado
+                      value: 2
+                      disabled: false
+                      filterString: null
+                      style: null
+                    - label: Viúvo
+                      value: 3
+                      disabled: false
+                      filterString: null
+                      style: null
+                    - label:  Divorciado
+                      value: 4
+                      disabled: false
+                      filterString: null
+                      style: null
+                    - label: União Estável
+                      value: 5
+                      disabled: false
+                      filterString: null
+                      style: null
+          - id: Voltar
+            type: Button
             layout:
-              span: 8
+              span: 12 
             properties:
-              title: CPF
-              placeholder: Digite o CPF do colaborador
-          - id: birthday
-            type: DateSelector
+              title: Voltar
+              block: true 
+              type: default 
+              icon: ArrowLeftOutlined
+          - id: Cadastrar
+            type: Button
             layout:
-              span: 10
-              offset: 4
-            required: true
+              span: 12
             properties:
-              title: Data de nascimento
-              placeholder: 'Digite ou Selecione'  
-              disabledDates:
-                dates: []
-                ranges: 
-                max: 
-                  _data: 
-              format: DD/MM/YYYY
-      - id: dados localização    
-        type: Card
-        layout:
-          contentGutter: [15, 0]
-        blocks:   
-          - id: zip
-            type: TextInput
-            validate:
-              - message: Apenas digitos.
-                status: error
-                pass:
-                  _regex: '^\d{8,8}$'   
-            layout:
-              span: 6
-            properties:
-              title: CEP
-              placeholder: 'Ex: 20560218' 
+              title: Cadastrar
+              block: true
+              type: primary 
+              icon: SaveOutlined
             events:
-              onChange:
-                  - id: get_cep
+              onClick:
+                try:
+                  - id: validate_filds
+                    type: Validate
+                  - id: insert
                     type: Request
-                    skip:
-                      _not:
-                        _gte:
-                          - _js.getLabel: 
-                            - _state: zip
-                          - 8
                     params:
-                      - get_zip_data             
-                  - id: set_brands
-                    type: SetState
-                    skip:
-                      _not:
-                        _gte:
-                          - _js.getLabel: 
-                            - _state: zip
-                          - 8
+                      - save_data
+                  - id: send_email
+                    type: Request
                     params:
-                      street:
-                        _request: get_zip_data.data.logradouro
-                      district:
-                        _request: get_zip_data.data.bairro
-                      city:
-                        _request: get_zip_data.data.localidade
-                      state:
-                        _request: get_zip_data.data.uf 
-          - id: street
-            type: TextInput
-            validate:
-              - message: Não podecaracter especial.
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
-            layout:
-              span: 7
-            properties:
-              title: Logradouro
-              placeholder: 'EX: Rua caruaru' 
-              disabled: false
-          - id: number
-            type: TextInput
-            validate:
-              - message: Não podecaracter especial.
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
-            layout:
-              span: 7
-            properties:
-              title: Número
-              placeholder: 'EX: 150'
-          - id: district
-            type: TextInput
-            validate:
-              - message: Não podecaracter especial.
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'            
-            layout:
-              span: 6
-            properties:
-              title: Bairro
-              placeholder: 'EX: Grajaú'   
-              disabled: false
-          - id: city
-            type: TextInput
-            validate:
-              - message: Não podecaracter especial.
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
-            layout:
-              span: 7
-            properties:
-              title: Cidade
-              placeholder: 'EX: Rio de Janeiro'
-              disabled: true    
-          - id: state
-            type: TextInput
-            validate:
-              - message: Não podecaracter especial.
-                status: error
-                pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
-            layout:
-              span: 6
-            properties:
-              title: Estado
-              placeholder: 'EX: RJ'
-              disabled: true  
-      - id: dados familiar    
-        type: Card
-        blocks:   
-          - id: children_qty
-            type: RatingSlider
-            properties:
-              color: '#d9d9d9'
-              disableIcons: true 
-              disableNotApplicable: true
-              title: Quantos filhos?
-          - id: children_names
-            type: TextArea
-            properties:
-              autoSize: true
-              title: Digite o nome dos filhos
-            visible: 
-              _gte:
-                - _state: children_qty
-                - 1
-          - id: marital_state
-            type: Selector
-            layout:
-              span: 10
-            properties:
-              title: Estato civil
-              placeholder: 'Escolha o um estado'  
-              options:
-                - label: Solteiro
-                  value: Solteiro
-                  disabled: false
-                  filterString: null
-                  style: null
-                - label: Casado
-                  value: Casado
-                  disabled: false
-                  filterString: null
-                  style: null
-                - label: Viúvo
-                  value: Viúvo
-                  disabled: false
-                  filterString: null
-                  style: null
-                - label:  Divorciado
-                  value: Divorciado
-                  disabled: false
-                  filterString: null
-                  style: null
-                - label: União Estável
-                  value: União Estável
-                  disabled: false
-                  filterString: null
-                  style: null
-      - id: Voltar
-        type: Button
-        layout:
-          span: 12 
-        properties:
-          title: Voltar
-          block: true 
-          type: default 
-          icon: ArrowLeftOutlined
-      - id: Cadastrar
-        type: Button
-        layout:
-          span: 12
-        properties:
-          title: Cadastrar
-          block: true
-          type: primary 
-          icon: SaveOutlined
-        events:
-          onClick:
-            - id: validate_filds
-              type: Validate
-              messages:
-                error: Ah campos com erro.
-            - id: insert
-              type: Request
-              params:
-                - save_data
-            - id: send_email
-              type: Request
-              params:
-                - send_reminder
-
-  
+                      - send_reminder
+                  - id: success
+                    type: Message
+                    messages:
+                    params:
+                      content: Os dados foram salvos 
+                      status: success
+                      duration: 10
+                  - id: reset
+                    type: Reset
+                catch:
+                  - id: erro
+                    type: Message
+                    messages:
+                    params:
+                      content: Ocorreu um erro ao salvar os dados 
+                      status: error
+                      duration: 10 
+                      

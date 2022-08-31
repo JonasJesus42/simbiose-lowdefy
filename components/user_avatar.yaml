@@ -50,7 +50,7 @@ blocks:
         properties:
           html:
             # Show the user name using the "name" claim on the user object/OpenID Connect ID token.
-            _user: name
+            _user: nickname
         # Show the user avatar using the "picture" claim on the user object/OpenID Connect ID token.
       - id: user_avatar
         type: Avatar
@@ -61,4 +61,4 @@ blocks:
           src:
             _user: picture
           alt:
-            _user: name
+            _user: nickname
