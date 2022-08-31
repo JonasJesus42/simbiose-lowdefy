@@ -13,6 +13,13 @@ config:
   auth:
     openId:
       logoutRedirectUri: '{{ openid_domain }}/v2/logout?returnTo={{ host }}/home&client_id={{ client_id }}'
+    pages:
+      protected: true
+      public:
+        - '404'
+        - login
+        - home
+        - colaboradores
 
 connections:
   - id: mysql
@@ -42,13 +49,20 @@ menus:
   - id: default
     links:
 
+      - id: Home
+        type: MenuLink
+        properties:
+          icon: InsertRowAboveOutlined
+          title: Home
+        pageId: home
+ 
       - id: Listagem Colaboradores
         type: MenuLink
         properties:
           icon: OrderedListOutlined
           title: Listagem de Colaboradores
         pageId: colaboradores
-
+      
       - id: Cadastro Colaboradores
         type: MenuLink
         properties:
