@@ -5,6 +5,21 @@ onClick:
     blockId: block_id
     method: toggleOpen
 
+requests:
+  - id: getUser 
+    type: KnexBuilder
+    connectionId: mysql
+    properties:
+      query: 
+        - select:
+            - id 
+            - first_name 
+            - last_name
+            - email
+            - password
+        - from:
+            - user
+
 
 id: login
 type: PageHCF
@@ -58,8 +73,8 @@ areas:
                 span: 6
               properties:
                 style:
-                  border: None
-                  boxShadow: None
+                  border: None;
+                  box-shadow: None;
                 ghost: true
                 title: Esqueci minha senha
                 block: true
@@ -67,24 +82,24 @@ areas:
                 icon: LoginOutlined
               events:
                 onClick:
-                - id: setOpen
-                  type: CallMethod
-                  params:
-                    blockId: modal
-                    method: setOpen
-                    args:
-                      - open: true
+                  - id: setOpen
+                    type: CallMethod
+                    params:
+                      blockId: modal
+                      method: setOpen
+                      args:
+                        - open: true
             - id: Cadastrar
               type: Button
               layout:
                 span: 24
-              properties:
-                style:
-                  marginTop: 10px
-                title: Log in
-                block: true
-                type: primary # Make the button a primary button with color
-                icon: LoginOutlined        
+              events:
+                onClick:
+                  - id: getUserBD
+                    type: Request
+                    params:
+                      - getUser      
+
             - id: modal
               type: Modal
               properties:

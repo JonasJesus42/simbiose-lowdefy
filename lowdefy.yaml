@@ -5,6 +5,15 @@ app:
   html:
     appendHead:
       _ref: imports.html 
+
+config:
+  # Always direct users to the login page, which will redirect them to the correct page.
+  homePageId: login
+  auth:
+    openId:
+      logoutRedirectUri: '{{ openid_domain }}/v2/logout?returnTo={{ host }}/logged-out&client_id={{ client_id }}'
+
+
       
 connections:
   - id: mysql
@@ -30,8 +39,13 @@ connections:
       from: jonas.silva@simbioseventures.com
       templateId: d-783a032125c24ece991217283d835727
 
+
 pages:
   - _ref: screens/test.yaml
   - _ref: screens/home.yaml
   - _ref: screens/novoColaborador.yaml
   - _ref: screens/login.yaml
+  - _ref: screens/404.yaml
+  - _ref: screens/logged-out.yaml
+  - _ref: screens/protected-page.yaml
+
