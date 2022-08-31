@@ -1,33 +1,82 @@
-id: novo colaborador
-type: PageHeaderMenu
+id: editarcolaborador
+type: PageHCF
+
 requests:
-  - id: save_data
-    type: KnexBuilder
+  - id: update_data
+    type: KnexRaw
     connectionId: mysql
     properties:
-        tableName: user
-        query:
-          - insert:
-              - _state: true
+        query: update user set first_name = :name, last_name = :last, cpf = :cpf, email = :email, birthday = :birthday, zip = :zip,  street = :street, district = :district, city = :city, state = :state, number = :number,  children_qty = :children_qty, children_names  = :children_names, marital_state = :marital_state  where user_id = :user_id
+        parameters:
+          user_id:
+            _url_query: colaborador_id
+          name:
+            _state: first_name
+
+          last:
+            _state: last_name
+
+          cpf:
+            _state: cpf
+
+          email:
+            _state: email
+
+          birthday:
+            _state: birthday
+
+          zip:
+            _state: zip 
+
+          street:
+            _state: street 
+
+          district:
+            _state: district 
+
+          city:
+            _state: city
+
+          state:
+            _state: state 
+
+          number:
+            _state: number 
+
+          children_qty:
+            _state: children_qty 
+
+          children_names:
+            _state: children_names 
+
+          marital_state:
+            _state: marital_state  
   - id: get_zip_data
     type: AxiosHttp
     connectionId: cep
     properties:
         url:
           _nunjucks: https://viacep.com.br/ws/{{ zip }}/json/   
-  - id: send_reminder
-    type: SendGridMailSend
-    connectionId: my_sendgrid
+  - id: get_colaborador
+    type: KnexRaw
+    connectionId: mysql
     properties:
-      to: 
-        _state: email
-      dynamicTemplateData:
-        login: 
-          _state: email
-        password: 
-          _state: password
+      query: select * from user where user_id = :user_id
+      parameters:
+        user_id:
+          _url_query: colaborador_id
+
+events:
+  onEnter: 
+    - id: fetch_colaborador
+      type: Request
+      params: get_colaborador
+    - id: set_colaborador_info
+      type: SetState
+      params: 
+        _request: get_colaborador
 properties:
-  title: novo colaboradores
+  title: Editar colaboradores
 layout:
   contentJustify: center
 blocks: 
@@ -37,10 +86,10 @@ blocks:
       size: 800
       contentGutter: 8
     blocks:
-      - id: Cadastre novos colaboradores
+      - id: Edidar_colaborador
         type: Title
         properties:
-          content: Cadastre novos colaboradores
+          content: Editar Colaborador
           level: 3 
       - id: Dados de acesso
         type: Card
@@ -49,7 +98,6 @@ blocks:
         blocks:
           - id: email
             type: TextInput
-            SetState: waa
             validate:
               - message: Coloque um E-mail.
                 status: error
@@ -65,7 +113,7 @@ blocks:
               span: 10
             properties:
               title: E-mail
-              placeholder: Digite o E-mail do colaborador
+              placeholder: Digite o E-mail do colaborador 
           - id: password
             type: PasswordInput
             validate:
@@ -200,7 +248,8 @@ blocks:
                           - 8
                     params:
                       street:
-                        _request: get_zip_data.data.logradouro
+                        _log:
+                          _request: get_zip_data.data.logradouro
                       district:
                         _request: get_zip_data.data.bairro
                       city:
@@ -326,18 +375,20 @@ blocks:
       - id: Voltar
         type: Button
         layout:
-          span: 12 
+          span: 12
+          grow: 1 
         properties:
           title: Voltar
           block: true 
           type: default 
           icon: ArrowLeftOutlined
-      - id: Cadastrar
+      - id: Atualizar
         type: Button
         layout:
           span: 12
+          grow: 1
         properties:
-          title: Cadastrar
+          title: Atualizar
           block: true
           type: primary 
           icon: SaveOutlined
@@ -347,13 +398,49 @@ blocks:
               type: Validate
               messages:
                 error: Ah campos com erro.
-            - id: insert
+            - id: update
               type: Request
               params:
-                - save_data
-            - id: send_email
-              type: Request
-              params:
-                - send_reminder
+                - update_data
+            - id: link_to_list
+              type: Link
+              params: 
+                pageId: colaboradores    
+    events:
+      onMount:
+          - id: set_infos
+            type: SetState
+            params:
+              email:
+                _request: get_colaborador.0.0.email                      
+              password: 
+                _request: get_colaborador.0.0.password   
+              first_name:
+                _request:  get_colaborador.0.0.first_name
+              last_name:
+                _request:  get_colaborador.0.0.last_name
+              cpf:
+                _request:  get_colaborador.0.0.cpf  
+              birthday:
+                _request:  get_colaborador.0.0.birthday
+              zip:
+                _request:  get_colaborador.0.0.zip
+              street:
+                _request:  get_colaborador.0.0.street
+              number:
+                _request:  get_colaborador.0.0.number
+              district:
+                _request:  get_colaborador.0.0.district
+              city:
+                _request:  get_colaborador.0.0.city
+              state:
+                _request:  get_colaborador.0.0.state   
+              children_qty:
+                _request:  get_colaborador.0.0.children_qty
+              marital_state:
+                _request:  get_colaborador.0.0.marital_state
+              children_names:
+                _request:  get_colaborador.0.0.children_names     
+                                 
 
   
