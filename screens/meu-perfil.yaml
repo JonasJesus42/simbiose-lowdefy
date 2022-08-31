@@ -1,4 +1,4 @@
-id: editarcolaborador
+id: meuperfil
 type: PageHCF
 
 requests:
@@ -6,7 +6,7 @@ requests:
     type: KnexRaw
     connectionId: mysql
     properties:
-        query: update user set first_name = :name, last_name = :last, cpf = :cpf, email = :email, birthday = :birthday, zip = :zip,  street = :street, district = :district, city = :city, state = :state, number = :number,  children_qty = :children_qty, children_names  = :children_names, marital_state = :marital_state  where user_id = :user_id
+        query: update user set first_name = :name, last_name = :last, cpf = :cpf, email = :email, birthday = :birthday, zip = :zip,  street = :street, district = :district, city = :city, state = :state, number = :number,  children_qty = :children_qty, children_names  = :children_names, marital_state = :marital_state  where email = :user_id
         parameters:
           user_id:
             _url_query: colaborador_id
@@ -26,60 +26,71 @@ requests:
             _state: birthday
 
           zip:
-            _state: zip 
+            _state: zip
 
           street:
-            _state: street 
+            _state: street
 
           district:
-            _state: district 
+            _state: district
 
           city:
             _state: city
 
           state:
-            _state: state 
+            _state: state
 
           number:
-            _state: number 
+            _state: number
 
           children_qty:
-            _state: children_qty 
+            _state: children_qty
 
           children_names:
-            _state: children_names 
+            _state: children_names
 
           marital_state:
-            _state: marital_state  
+            _state: marital_state
+  - id: update_password
+    type: KnexRaw
+    connectionId: mysql
+    properties:
+      query: update user set password = :password where email = :user_id
+      parameters:
+        user_id:
+          _url_query: colaborador_id
+        password:
+          _state: password
+
   - id: get_zip_data
     type: AxiosHttp
     connectionId: cep
     properties:
         url:
-          _nunjucks: https://viacep.com.br/ws/{{ zip }}/json/   
+          _nunjucks: https://viacep.com.br/ws/{{ zip }}/json/
   - id: get_colaborador
     type: KnexRaw
     connectionId: mysql
     properties:
-      query: select * from user where user_id = :user_id
+      query: select * from user where email = :user_id
       parameters:
         user_id:
           _url_query: colaborador_id
 
 events:
-  onEnter: 
+  onEnter:
     - id: fetch_colaborador
       type: Request
       params: get_colaborador
     - id: set_colaborador_info
       type: SetState
-      params: 
+      params:
         _request: get_colaborador
 properties:
   title: Editar colaboradores
 layout:
   contentJustify: center
-blocks: 
+blocks:
   - id: content
     type: Card
     layout:
@@ -89,11 +100,12 @@ blocks:
       - id: Edidar_colaborador
         type: Title
         properties:
-          content: Editar Colaborador
-          level: 3 
+          content: Meu Cadastro
+          level: 3
       - id: Dados de acesso
         type: Card
         layout:
+          contentGutter: 5
           contentJustify: space-between
         blocks:
           - id: email
@@ -114,13 +126,19 @@ blocks:
             properties:
               title: E-mail
               placeholder: Digite o E-mail do colaborador
-              disabled: true
-      - id: dados pessoas    
+          - id: password
+            type: PasswordInput
+            layout:
+              span: 10
+            properties:
+              title: senha
+              placeholder: 'EX: 12345678'
+      - id: dados pessoas
         type: Card
         layout:
           contentGutter: 5
           contentJustify: start
-        blocks:   
+        blocks:
           - id: first_name
             type: TextInput
             validate:
@@ -135,11 +153,11 @@ blocks:
                 pass:
                   _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$'
             layout:
-              span: 10 
-              align: middle        
+              span: 10
+              align: middle
             properties:
               title: Nome
-              placeholder: Nome do colaborador   
+              placeholder: Nome do colaborador
           - id: last_name
             type: TextInput
             validate:
@@ -158,7 +176,7 @@ blocks:
               offset: 2
             properties:
               title: Sobrenome
-              placeholder: Sobrenome do colaborador   
+              placeholder: Sobrenome do colaborador
           - id: cpf
             type: TextInput
             validate:
@@ -177,6 +195,7 @@ blocks:
             properties:
               title: CPF
               placeholder: Digite o CPF do colaborador
+              disabled: true
           - id: birthday
             type: DateSelector
             layout:
@@ -185,30 +204,31 @@ blocks:
             required: true
             properties:
               title: Data de nascimento
-              placeholder: 'Digite ou Selecione'  
+              placeholder: 'Digite ou Selecione'
+              disabled: true
               disabledDates:
                 dates: []
-                ranges: 
-                max: 
-                  _data: 
+                ranges:
+                max:
+                  _data:
               format: DD/MM/YYYY
-      - id: dados localização    
+      - id: dados localização
         type: Card
         layout:
           contentGutter: [15, 0]
-        blocks:   
+        blocks:
           - id: zip
             type: TextInput
             validate:
               - message: Apenas digitos.
                 status: error
                 pass:
-                  _regex: '^\d{8,8}$'   
+                  _regex: '^\d{8,8}$'
             layout:
               span: 6
             properties:
               title: CEP
-              placeholder: 'Ex: 20560218' 
+              placeholder: 'Ex: 20560218'
             events:
               onChange:
                   - id: get_cep
@@ -216,17 +236,17 @@ blocks:
                     skip:
                       _not:
                         _gte:
-                          - _js.getLabel: 
+                          - _js.getLabel:
                             - _state: zip
                           - 8
                     params:
-                      - get_zip_data             
+                      - get_zip_data
                   - id: set_brands
                     type: SetState
                     skip:
                       _not:
                         _gte:
-                          - _js.getLabel: 
+                          - _js.getLabel:
                             - _state: zip
                           - 8
                     params:
@@ -238,7 +258,7 @@ blocks:
                       city:
                         _request: get_zip_data.data.localidade
                       state:
-                        _request: get_zip_data.data.uf 
+                        _request: get_zip_data.data.uf
           - id: street
             type: TextInput
             validate:
@@ -250,7 +270,7 @@ blocks:
               span: 7
             properties:
               title: Logradouro
-              placeholder: 'EX: Rua caruaru' 
+              placeholder: 'EX: Rua caruaru'
               disabled: false
           - id: number
             type: TextInput
@@ -270,12 +290,12 @@ blocks:
               - message: Não podecaracter especial.
                 status: error
                 pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'            
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
             layout:
               span: 6
             properties:
               title: Bairro
-              placeholder: 'EX: Grajaú'   
+              placeholder: 'EX: Grajaú'
               disabled: false
           - id: city
             type: TextInput
@@ -283,34 +303,34 @@ blocks:
               - message: Não podecaracter especial.
                 status: error
                 pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
             layout:
               span: 7
             properties:
               title: Cidade
               placeholder: 'EX: Rio de Janeiro'
-              disabled: true    
+              disabled: true
           - id: state
             type: TextInput
             validate:
               - message: Não podecaracter especial.
                 status: error
                 pass:
-                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'   
+                  _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
             layout:
               span: 6
             properties:
               title: Estado
               placeholder: 'EX: RJ'
-              disabled: true  
-      - id: dados familiar    
+              disabled: true
+      - id: dados familiar
         type: Card
-        blocks:   
+        blocks:
           - id: children_qty
             type: RatingSlider
             properties:
               color: '#d9d9d9'
-              disableIcons: true 
+              disableIcons: true
               disableNotApplicable: true
               title: Quantos filhos?
           - id: children_names
@@ -318,7 +338,7 @@ blocks:
             properties:
               autoSize: true
               title: Digite o nome dos filhos
-            visible: 
+            visible:
               _gte:
                 - _state: children_qty
                 - 1
@@ -328,7 +348,7 @@ blocks:
               span: 10
             properties:
               title: Estato civil
-              placeholder: 'Escolha o um estado'  
+              placeholder: 'Escolha o um estado'
               options:
                 - label: Solteiro
                   value: Solteiro
@@ -359,70 +379,12 @@ blocks:
         type: Button
         layout:
           span: 12
-          grow: 1 
-        properties:
-          title: Voltar
-          block: true 
-          type: default 
-          icon: ArrowLeftOutlined
-      - id: delete_col
-        type: Button
-        layout:
           grow: 1
         properties:
-          title: Apagar
-          icon: DeleteOutlined
-          type: danger
+          title: Voltar
           block: true
-        events:
-          onClick:
-            - id: open_delete_modal
-              type: CallMethod
-              params:
-                blockId: delete_modal
-                method: open
-      - id: delete_modal
-        type: ConfirmModal
-        properties:
-          content: Tem certeza que quer apagar o colaborador?
-          okText: Sim
-          okButton:
-            type: danger
-          cancelText: Não
-        requests:
-          - id: delete_col
-            type: KnexRaw
-            connectionId: mysql
-            properties:
-              query: update user set status = 'DELETED' where user_id = :user_id
-              parameters:
-                user_id:
-                  _url_query: colaborador_id
-        events:
-          onOk:
-            try:
-              - id: delete_col
-                type: Request
-                params: delete_col
-              - id: link_to_brands
-                type: Link
-                params:
-                  pageId: colaboradores
-              - id: success
-                type: Message
-                messages:
-                params:
-                  content: O colaborador foi excluído com sucesso
-                  status: success
-                  duration: 10
-            catch:
-              - id: erro
-                type: Message
-                messages:
-                  params:
-                    content: Ocorreu um erro ao apagar os dados
-                    status: error
-                    duration: 10
+          type: default
+          icon: ArrowLeftOutlined
       - id: Atualizar
         type: Button
         layout:
@@ -431,35 +393,60 @@ blocks:
         properties:
           title: Atualizar
           block: true
-          type: primary 
+          type: primary
           icon: SaveOutlined
         events:
           onClick:
-            - id: validate_filds
-              type: Validate
-              messages:
-                error: Ah campos com erro.
-            - id: update
-              type: Request
-              params:
-                - update_data
-            - id: link_to_list
-              type: Link
-              params: 
-                pageId: colaboradores    
+            try:
+              - id: validate_filds
+                type: Validate
+                messages:
+                  error: Ah campos com erro.
+              - id: update
+                type: Request
+                params:
+                  - update_data
+              - id: update_password
+                type: Request
+                skip:
+                  _log:
+                    _eq:
+                      - _state: password
+                      - null
+                params:
+                  - update_password
+              - id: link_to_list
+                type: Link
+                params:
+                  pageId: colaboradores
+              - id: success
+                type: Message
+                messages:
+                params:
+                  content: Os dados foram salvos
+                  status: success
+                  duration: 10
+            catch:
+              - id: erro
+                type: Message
+                messages:
+                params:
+                  content: Ocorreu um erro ao salvar os dados
+                  status: error
+                  duration: 10
     events:
       onMount:
           - id: set_infos
             type: SetState
             params:
               email:
-                _request: get_colaborador.0.0.email                      
+                _request: get_colaborador.0.0.email
               first_name:
                 _request:  get_colaborador.0.0.first_name
               last_name:
                 _request:  get_colaborador.0.0.last_name
               cpf:
-                _request:  get_colaborador.0.0.cpf  
+                _request:  get_colaborador.0.0.cpf
               birthday:
                 _request:  get_colaborador.0.0.birthday
               zip:
@@ -473,13 +460,13 @@ blocks:
               city:
                 _request:  get_colaborador.0.0.city
               state:
-                _request:  get_colaborador.0.0.state   
+                _request:  get_colaborador.0.0.state
               children_qty:
                 _request:  get_colaborador.0.0.children_qty
               marital_state:
-                _log:
-                  _request:  get_colaborador.0.0.marital_state
+                _request:  get_colaborador.0.0.marital_state
               children_names:
-                _request:  get_colaborador.0.0.children_names     
-                                 
+                _request:  get_colaborador.0.0.children_names
+
+
 
