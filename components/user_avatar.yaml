@@ -1,7 +1,6 @@
 id: user_avatar
 type: Box
 blocks:
-  # Show a login button if the user is not logged in.
   - id: user_avatar_login_button
     type: Button
     visible:
@@ -17,8 +16,6 @@ blocks:
       onClick:
         - id: login
           type: Login
-  # Show the user name and avatar if the user is logged in.
-  # Clicking on this Box will link to the "profile" page.
   - id: user_profile_link
     type: Box
     visible:
@@ -34,13 +31,16 @@ blocks:
       onClick:
         - id: link_to_profile
           type: Link
-          params: profile
+          params:
+            pageId: meuperfil
+            urlQuery:
+              colaborador_id:
+                - _user: name
     blocks:
       - id: user_name
         type: Html
         layout:
           flex: 0 1 auto
-        # Only show the name if the screen width is greater that 992px
         visible:
           _gt:
             - _media: width
@@ -51,7 +51,6 @@ blocks:
           html:
             # Show the user name using the "name" claim on the user object/OpenID Connect ID token.
             _user: nickname
-        # Show the user avatar using the "picture" claim on the user object/OpenID Connect ID token.
       - id: user_avatar
         type: Avatar
         layout:

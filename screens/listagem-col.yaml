@@ -27,8 +27,11 @@ requests:
           - last_name: 'last_name'
           - email: 'email' 
           - birthday: 'birthday'
+          - status: 'status'
         - from:
           - user
+        - where:
+            - status: 'ACTIVE'
   - id: marital_status
     type: KnexRaw
     connectionId: mysql
