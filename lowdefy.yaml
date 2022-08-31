@@ -7,7 +7,13 @@ app:
   html:
     appendHead:
       _ref: imports.html 
-      
+
+config:
+  homePageId: home
+  auth:
+    openId:
+      logoutRedirectUri: '{{ openid_domain }}/v2/logout?returnTo={{ host }}/home&client_id={{ client_id }}'
+
 connections:
   - id: mysql
     type: Knex
@@ -35,24 +41,26 @@ connections:
 menus:
   - id: default
     links:
-      
+
       - id: Listagem Colaboradores
         type: MenuLink
         properties:
           icon: OrderedListOutlined
           title: Listagem de Colaboradores
-        pageId: colaboradores 
+        pageId: colaboradores
 
       - id: Cadastro Colaboradores
         type: MenuLink
         properties:
           icon: InsertRowAboveOutlined
           title: Cadastro de Colaboradores
-        pageId: novo colaborador    
+        pageId: novo colaborador
 
 pages:
-  - _ref: screens/test.yaml
   - _ref: screens/home.yaml
   - _ref: screens/novoColaborador.yaml
   - _ref: screens/listagem-col.yaml
   - _ref: screens/editar-colaborador.yaml
+  - _ref: screens/logged-out.yaml
+
+

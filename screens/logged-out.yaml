@@ -1,0 +1,34 @@
+id: logged-out
+type: Context
+layout:
+  contentGutter: 16
+  contentJustify: center
+properties:
+  title: Logged Out
+blocks:
+  - id: box
+    type: Box
+    layout:
+      contentAlign: center
+      contentGutter: 20
+      size: 800
+    style:
+      margin: 100px 20px
+    blocks:
+      - id: logo
+        type: Html
+        style:
+          textAlign: center
+        properties:
+          html: |
+            <img style="width: 80%; max-width: 250px;" src="/public/logo-light-theme.png" alt="Logo"/>
+      - id: Logout
+        type: Button
+        visible:
+          _ne:
+            - _user: sub
+            - null
+        events:
+          onClick:
+            - id: logout
+              type: Logout

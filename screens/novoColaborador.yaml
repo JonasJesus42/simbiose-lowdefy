@@ -49,7 +49,6 @@ blocks:
         blocks:
           - id: email
             type: TextInput
-            SetState: waa
             validate:
               - message: Coloque um E-mail.
                 status: error
