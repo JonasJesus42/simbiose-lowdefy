@@ -1,6 +1,7 @@
 id: home
 type: PageHeaderMenu
 
+ 
 requests:
   - id: first_name
     type: KnexBuilder
@@ -22,6 +23,9 @@ events:
 properties:
   title: Welcome
 areas:
+  header:
+     blocks:
+       - _ref: components/user_avatar.yaml
   content:
     justify: center
     blocks:
