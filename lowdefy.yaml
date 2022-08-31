@@ -76,5 +76,6 @@ pages:
   - _ref: screens/listagem-col.yaml
   - _ref: screens/editar-colaborador.yaml
   - _ref: screens/logged-out.yaml
+  - _ref: screens/meu-perfil.yaml
 
 
