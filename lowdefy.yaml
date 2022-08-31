@@ -1,6 +1,8 @@
 lowdefy: 3.23.3
 name: Lowdefy starter
-
+types:
+  AgGridAlpine:
+    url: https://blocks-cdn.lowdefy.com/v3.12.3/blocks-aggrid/meta/AgGridAlpine.json
 app:
   html:
     appendHead:
@@ -11,7 +13,7 @@ config:
   auth:
     openId:
       logoutRedirectUri: '{{ openid_domain }}/v2/logout?returnTo={{ host }}/home&client_id={{ client_id }}'
-     
+
 connections:
   - id: mysql
     type: Knex
@@ -36,10 +38,29 @@ connections:
       from: jonas.silva@simbioseventures.com
       templateId: d-783a032125c24ece991217283d835727
 
+menus:
+  - id: default
+    links:
+
+      - id: Listagem Colaboradores
+        type: MenuLink
+        properties:
+          icon: OrderedListOutlined
+          title: Listagem de Colaboradores
+        pageId: colaboradores
+
+      - id: Cadastro Colaboradores
+        type: MenuLink
+        properties:
+          icon: InsertRowAboveOutlined
+          title: Cadastro de Colaboradores
+        pageId: novo colaborador
 
 pages:
   - _ref: screens/home.yaml
   - _ref: screens/novoColaborador.yaml
+  - _ref: screens/listagem-col.yaml
+  - _ref: screens/editar-colaborador.yaml
   - _ref: screens/logged-out.yaml
 
 

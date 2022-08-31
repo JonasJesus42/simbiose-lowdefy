@@ -1,0 +1,111 @@
+id: colaboradores
+type: PageHeaderMenu
+properties:
+  title: Listagem de Colaboradores
+
+events:
+  onInitAsync:
+    - id: fetch_data  
+      type: Request 
+      params:
+        - get_colaboradores 
+  onEnter:
+    - id: get_marital_status  
+      type: Request 
+      params:
+        - marital_status 
+
+requests:
+  - id: get_colaboradores
+    type: KnexBuilder
+    connectionId: mysql
+    properties:
+      query: 
+        - select:
+          - user_id: 'user_id'
+          - first_name: 'first_name'
+          - last_name: 'last_name'
+          - email: 'email' 
+          - birthday: 'birthday'
+        - from:
+          - user
+  - id: marital_status
+    type: KnexRaw
+    connectionId: mysql
+    properties:
+      query: select marital_state as name, COUNT(*) as value from user group by marital_state
+
+
+areas:
+  content:
+    blocks:              
+      - id: block_id
+        type: EChart
+        properties:
+          option:
+            singleAxis:
+              type: value
+            series:
+              - type: pie
+                data:
+                    _request: marital_status.0
+      - id: table_card
+        type: Card
+        properties:
+          title: Listagem de Colaboradores
+        blocks:
+        - id: my_table
+          type: AgGridAlpine
+          properties:
+            rowData:
+                  _request: get_colaboradores
+            defaultColDef:
+              sortable: true
+              resizable: true
+              filter: true
+              width: 450
+            columnDefs:
+              - headerName: Nome
+                field: first_name
+              - headerName: Sobrenome
+                field: last_name
+              - headerName: Email
+                field: email
+              - headerName: Data de Nascimento
+                field: birthday
+                valueFormatter:
+                  _function:
+                    __format.momentFormat:
+                      on:
+                        __args: 0.value
+                      params:
+                        format: 'DD-MM-YYYY'
+          events:
+            onRowClick:
+            - id: set_selected
+              type: SetState
+              params:
+                selected_row: # Update 'selected' in state with the event data.
+                  _event: row           
+            - id: link_to_edit_colaborador
+              type: Link
+              params:
+                pageId: editarcolaborador
+                urlQuery:
+                  colaborador_id:
+                    _state: selected_row.user_id
+        - id: Download
+          type: Button
+          properties:
+            style:
+              marginTop: 10px
+            title: Download CSV
+            icon: DownloadOutlined
+          events:
+            onClick:
+              - id: download
+                type: CallMethod
+                params:
+                  blockId: table
+                  method: exportDataAsCsv  
+          
